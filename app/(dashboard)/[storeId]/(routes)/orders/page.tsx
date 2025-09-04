@@ -22,7 +22,6 @@ const OrdersPage = async ({ params }: { params: { storeId: string } }) => {
       createdAt: "desc",
     },
   });
-
   // const formattedOrders: OrderColumn[] = orders.map((item) => ({
   //   id: item.id,
   //   phone: item.phone,
@@ -53,6 +52,8 @@ const OrdersPage = async ({ params }: { params: { storeId: string } }) => {
     isPaid: item.isPaid,
     createdAt: format(item.createdAt, "MMMM do, yyyy"),
   }));
+
+  console.log(formattedOrders, "-კსსჯკკსსკსკკ");
 
   return (
     <div className="flex-col">
