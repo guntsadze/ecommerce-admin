@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { CldUploadWidget } from "next-cloudinary";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ImagePlus, Trash } from "lucide-react";
 
@@ -25,9 +25,14 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     setIsMounted(true);
   }, []);
 
-  const onUpload = (result: any) => {
-    onChange(result.info.secure_url);
-  };
+  const onUpload = useCallback(
+    (result: any) => {
+      if (result?.info?.secure_url) {
+        onChange(result.info.secure_url);
+      }
+    },
+    [onChange]
+  );
 
   if (!isMounted) {
     return null;
@@ -55,25 +60,27 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           </div>
         ))}
       </div>
-      <CldUploadWidget onUpload={onUpload} uploadPreset="ephgfppp">
-        {({ open }) => {
-          const onClick = () => {
-            open();
-          };
+      {isMounted && (
+        <CldUploadWidget onUpload={onUpload} uploadPreset="ephgfppp">
+          {({ open }) => {
+            const onClick = () => {
+              open();
+            };
 
-          return (
-            <Button
-              type="button"
-              disabled={disabled}
-              variant="secondary"
-              onClick={onClick}
-            >
-              <ImagePlus className="h-4 w-4 mr-2" />
-              Upload an Image
-            </Button>
-          );
-        }}
-      </CldUploadWidget>
+            return (
+              <Button
+                type="button"
+                disabled={disabled}
+                variant="secondary"
+                onClick={onClick}
+              >
+                <ImagePlus className="h-4 w-4 mr-2" />
+                Upload an Image
+              </Button>
+            );
+          }}
+        </CldUploadWidget>
+      )}
     </div>
   );
 };

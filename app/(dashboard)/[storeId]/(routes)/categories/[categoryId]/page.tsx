@@ -6,17 +6,27 @@ const CategoryPage = async ({
 }: {
   params: { categoryId: string; storeId: string };
 }) => {
-  const category = await prismadb.category.findUnique({
-    where: {
-      id: params.categoryId,
-    },
-  });
+  let category = null;
 
-  const billboards = await prismadb.billboard.findMany({
-    where: {
-      storeId: params.storeId,
-    },
-  });
+  if (params.categoryId !== "new") {
+    category = await prismadb.category.findUnique({
+      where: {
+        id: params.categoryId,
+      },
+    });
+  }
+
+  let billboards = null;
+
+  if (params.storeId !== "new") {
+    billboards = await prismadb.billboard.findMany({
+      where: {
+        storeId: params.storeId,
+      },
+    });
+  }
+
+  console.log(billboards, "billboardsbillboards");
 
   return (
     <div className="flex-col">

@@ -2,11 +2,15 @@ import prismadb from "@/lib/prismadb";
 import { SizeForm } from "./components/size-form";
 
 const SizePage = async ({ params }: { params: { sizeId: string } }) => {
-  const size = await prismadb.size.findUnique({
-    where: {
-      id: params.sizeId,
-    },
-  });
+  let size = null;
+
+  if (params.sizeId !== "new") {
+    size = await prismadb.size.findUnique({
+      where: {
+        id: params.sizeId,
+      },
+    });
+  }
 
   return (
     <div className="flex-col">
